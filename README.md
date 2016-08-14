@@ -11,14 +11,17 @@ The 4 physical cores appears as 8 logical CPUs with hyper-threading.
 ## Use case
 
 The value of PI can be calculated approximately using the following method of approximating PI:
+
 1. Inscribe a circle in a square
+
 2. Generate randomly points in the square
-3. Determine the number of points in the square that are also in the circle
-Then, PI ~ 4 * number of points in the square. 
-Note that the more points generated, the better the approximation is.
+
+3. Determine the number of points in the square that are also in the circle. Then, PI ~ 4 * number of points in the square. Note that the more points generated, the better the approximation is.
 
 This computation is easy to parallelize since:
+
 - all point generations are independent; 
+
 - there is no need for data shared and synchronization.
 
 In order to parallelize the computation, the loop is divided into equal portions that can be executed by a pool of workers.
