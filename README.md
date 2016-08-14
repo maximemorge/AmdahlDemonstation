@@ -6,6 +6,9 @@ We aim at showing that increasing the number of workers/threads/actors increases
 The following experiments have been performed on a MacBook Pro 2,8 GHz Intel Core i7 Quad-core. 
 The 4 physical cores appears as 8 logical CPUs with hyper-threading.
 
+
+"In theory, there is no difference between theory and practice. But, in practice, there is."  Johannes Lambertus Adriana van de Snepscheut. 
+
 ![Speedup/workers](results/speedup.png)
 
 ## Use case
