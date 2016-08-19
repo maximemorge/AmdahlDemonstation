@@ -33,7 +33,7 @@ object Main {
   val TIMEOUTVALUE=50 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
 
-  val NBTASKS=1e8.toInt// number of shoots
+  val NBTASKS=5e8.toInt// number of shoots
   val MAXNUMWORKER=50// maximum number of workers
   val NBRUNS=20// for each number of workers , we consider NBRUNS runs
 
@@ -83,9 +83,9 @@ object Main {
     val runningTimes: Seq[Double] = for (run <- 1 to NBRUNS) yield {
       // The place where the method is selected
       //this.runActor(nbWorkers)
-      //this.runThread(nbWorkers)
-      //this.runThreadPool(nbWorkers)
-      this.runFuture(nbWorkers)
+      this.runThread(nbWorkers)
+      //this.runThreadPool(nbWorkers) DOES NOT WORK
+      //this.runFuture(nbWorkers)
     }
     val runningTime = runningTimes.sum / runningTimes.length
     runningTime

@@ -31,6 +31,6 @@ set output 'speedupFuture.png'
 plot 'speedupFuture.csv' with linespoints ls 1 title 'Parallel execution with futures', \
      8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
 # -- TODO Fixed thread
---set output 'speedupFuture.png'
---plot 'speedupFixedThreadPool.csv' with linespoints ls 1 title 'Parallel execution with thread pool', \
---     8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
+#--set output 'speedupFuture.png'
+#--plot 'speedupFixedThreadPool.csv' with linespoints ls 1 title 'Parallel execution with thread pool', \
+#--     8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
