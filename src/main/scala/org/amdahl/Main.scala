@@ -2,6 +2,8 @@
 package org.amdahl
 
 //Required for actors
+import java.util.concurrent.TimeUnit
+
 import akka.actor.{ActorSystem, Props}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -13,9 +15,9 @@ import scala.concurrent.duration._
 import java.util.concurrent.{ExecutorService, Executors}
 
 //Required for future
-import scala.concurrent.Future
+import scala.concurrent.{Future,ExecutionContext}
 import scala.util.{Try,Success, Failure}
-
+import java.util.concurrent.ThreadPoolExecutor
 
 import org.amdahl.actor.{Start, Stop, Supervisor}
 
@@ -24,6 +26,8 @@ import org.amdahl.actor.{Start, Stop, Supervisor}
   * */
 object Main {
   val debug=false
+
+  val nbProcessors= Runtime.getRuntime().availableProcessors()// number of logical processors
   val system = ActorSystem("AmdhalDemonstration")
   var idSupervisor=1// give a different id to each spuervisor
   val TIMEOUTVALUE=50 seconds// default timeout of a run
@@ -57,7 +61,7 @@ object Main {
     //This UNIX command returns the number physical core:
     // sysctl -n machdep.cpu.core_count
     //This command returns the number of logical threads in the JVM
-    println("Number of logical CPUs "+Runtime.getRuntime().availableProcessors())
+    println("Number of logical CPUs "+nbProcessors)
     val referenceTime = runExperiment(1)// the reference time with a single worker
     println("1,1.0")
     for (nbWorkers <- 2 to MAXNUMWORKER.toInt by 1){// for each number of workers
@@ -167,6 +171,10 @@ object Main {
     */
   def runFuture(nbWorkers: Int): Double = {
     import scala.concurrent.ExecutionContext.Implicits.global
+    //By default ForkJoinPool whose desired degree of parallelism is the number of CPUs
+    //TODO change context execution
+    //implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(MAXNUMWORKER))
+    //Otherwise see http://blog.jessitron.com/2014/01/choosing-executorservice.html
     val nbLocalTasks = NBTASKS/nbWorkers// nb of operators per workers
     var pi=0.0
     val startingTime=System.nanoTime// start clock
