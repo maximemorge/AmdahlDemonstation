@@ -1,5 +1,5 @@
 // Copyright (C) Dialectics 2016
-package org.amdahl
+package org.amdahl.actor
 
 import akka.actor.{Actor, ActorRef, Props}
 

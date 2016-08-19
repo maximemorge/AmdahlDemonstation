@@ -1,0 +1,14 @@
+# Copyright (C) Dialectics 2016
+# Scala
+*.class
+
+# sbt specific
+target/
+project/target
+
+# IntelliJIDEA
+*.iml
+.idea
+
+# MacOSX
+.DS_Store

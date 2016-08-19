@@ -2,9 +2,12 @@
 package org.amdahl
 
 import akka.actor.{ActorSystem, Props}
+
 import scala.concurrent.Await
 import akka.pattern.ask
 import akka.util.Timeout
+import org.amdahl.actor.{Start, Stop, Supervisor}
+
 import scala.concurrent.duration._
 
 /**
@@ -17,9 +20,9 @@ object Main {
   val TIMEOUTVALUE=50 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
 
-  val NBTASKS=1e9.toInt// number of shoots
-  val MAXNUMWORKER=50// maximum number of workers
-  val NBRUNS=20// for each number of workers , we consider NBRUNS runs
+  val NBTASKS=1e7.toInt// number of shoots
+  val MAXNUMWORKER=10// maximum number of workers
+  val NBRUNS=10// for each number of workers , we consider NBRUNS runs
 
 /**
 * Run the Actor system with the following default dispatcher and print a CSV file nbwWorkers,speedup
@@ -65,19 +68,19 @@ object Main {
     */
   def runExperiment(nbWorkers: Int): Double = {
     val runningTimes: Seq[Double] = for (run <- 1 to NBRUNS) yield {
-      this.run(nbWorkers)
+      this.runActor(nbWorkers)
     }
     val runningTime = runningTimes.sum / runningTimes.length
     return runningTime
   }
 
 /**
-  * Execute a single run with
+  * Execute a single run with Actors
   * @param nbWorkers
   * @return the running time in nanoseconds
   *
  */
-  def run(nbWorkers: Int): Double ={
+  def runActor(nbWorkers: Int): Double ={
     // Launch a new supervisor
     val supervisor = system.actorOf(Props(classOf[Supervisor], nbWorkers, NBTASKS), name = "supervisor" + idSupervisor)
     idSupervisor+=1// increment idSupervisor to have supervisors with different names
@@ -87,5 +90,20 @@ object Main {
     if (debug) print(result.time + " ")
     return result.time
   }
+
+
+  /**
+    * Execute a single run with Thread
+    * @param nbWorkers
+    * @return the running time in nanoseconds
+    *
+    */
+  def runThread(nbWorkers: Int): Double ={
+    // Launch
+    val time=0
+    if (debug) print(time + " ")
+    return time
+  }
+
 
 }
