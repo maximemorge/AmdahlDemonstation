@@ -1,14 +1,17 @@
 // Copyright (C) Dialectics 2016
 package org.amdahl
 
+//Required for actors
 import akka.actor.{ActorSystem, Props}
-
 import scala.concurrent.Await
 import akka.pattern.ask
 import akka.util.Timeout
-import org.amdahl.actor.{Start, Stop, Supervisor}
-
 import scala.concurrent.duration._
+
+//Required for thread pooll
+import java.util.concurrent.{Executors, ExecutorService}
+
+import org.amdahl.actor.{Start, Stop, Supervisor}
 
 /**
   * Main app to compute Pi
@@ -20,7 +23,7 @@ object Main {
   val TIMEOUTVALUE=50 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
 
-  val NBTASKS=1e8.toInt// number of shoots
+  val NBTASKS=2e8.toInt// number of shoots
   val MAXNUMWORKER=50// maximum number of workers
   val NBRUNS=20// for each number of workers , we consider NBRUNS runs
 
@@ -109,16 +112,41 @@ object Main {
     }catch{
       case e: InterruptedException => println("Intterruption while waiting for workers")
     }
-    //TODO Collecting value
-    //val pi=workers.sum(w => w.result)
     var pi=0.0
     for (w <- workers) {pi+=w.result}
     pi=pi/NBTASKS*4
+    //it should be feasible in a single line like val pi=workers.sum(w => w.result)
     if (debug) println("Pi= "+pi)
     var elapsedTime = System.nanoTime - startingTime// stop the clock
     if (debug) print(startingTime + " ")
     return elapsedTime
   }
+
+  /**
+    * Execute a single run with Thread
+    * @param nbWorkers
+    * @return the running time in nanoseconds
+    *
+    */
+  def runThreadPool(nbWorkers: Int): Double ={
+    val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    val startingTime=System.nanoTime// start clock
+    // Creation of Threads
+    val workers = for(i <- 1 to nbWorkers) yield new org.amdahl.thread.Worker(i,NBTASKS/nbWorkers)
+    workers.foreach(_ => pool.execute(_)) // Running Thread
+    pool.shutdown()
+    // Waiting for the thread
+    while (!pool.isTerminated()) {}
+    var pi=0.0
+    for (w <- workers) {pi+=w.result}
+    pi=pi/NBTASKS*4
+    //it should be feasible in a single line like val pi=workers.sum(w => w.result)
+    if (debug) println("Pi= "+pi)
+    var elapsedTime = System.nanoTime - startingTime// stop the clock
+    if (debug) print(startingTime + " ")
+    return elapsedTime
+  }
+
 
 
 }

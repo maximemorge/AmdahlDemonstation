@@ -13,7 +13,8 @@ import org.amdahl.task.Task
 class Worker(id: Int, nbTasks: Int) extends Thread{
   val debug= false
 
-  var result : Double = _ //returned value by the worker
+  //volatile synchronizes on every access
+  @volatile var result : Double = _ //returned value by the worker
 
   override def run()={
     try{
