@@ -9,7 +9,7 @@ The 4 physical cores appears as 8 logical CPUs with hyper-threading.
 
 "In theory, there is no difference between theory and practice. But, in practice, there is."  Johannes Lambertus Adriana van de Snepscheut. 
 
-![Speedup/workers](results/speedup.png)
+![Speedup/workers](results/speedupActor.png)
 
 ## Use case
 

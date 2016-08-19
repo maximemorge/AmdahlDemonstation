@@ -8,7 +8,7 @@ import akka.actor.{Actor, ActorRef, Props}
   * with nbWorkers slaves to performs the computation
   * with nbTasks "atomic" operations
   * */
-class Supervisor(nbWorkers: Int=1000, nbTasks: Int =1e6.toInt) extends Actor {
+class Supervisor(nbWorkers: Int, nbTasks: Int) extends Actor {
   val debug=false
   var boss : ActorRef = _// reference to the main Actor system
   var workers = Seq[ActorRef]()// the references to the workers

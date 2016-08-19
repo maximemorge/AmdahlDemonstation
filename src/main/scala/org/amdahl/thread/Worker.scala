@@ -13,10 +13,12 @@ import org.amdahl.task.Task
 class Worker(id: Int, nbTasks: Int) extends Thread{
   val debug= false
 
+  var result : Double = _ //returned value by the worker
+
   override def run()={
     try{
       val task= new Task()
-      task.cpuIntensive(nbTasks)
+      result = task.cpuIntensive(nbTasks)
     }catch{
       case e: InterruptedException => println("Intterruption while running worker "+id)
     }

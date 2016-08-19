@@ -20,9 +20,9 @@ object Main {
   val TIMEOUTVALUE=50 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
 
-  val NBTASKS=1e7.toInt// number of shoots
-  val MAXNUMWORKER=10// maximum number of workers
-  val NBRUNS=10// for each number of workers , we consider NBRUNS runs
+  val NBTASKS=1e8.toInt// number of shoots
+  val MAXNUMWORKER=50// maximum number of workers
+  val NBRUNS=20// for each number of workers , we consider NBRUNS runs
 
 /**
 * Run the Actor system with the following default dispatcher and print a CSV file nbwWorkers,speedup
@@ -101,18 +101,23 @@ object Main {
   def runThread(nbWorkers: Int): Double ={
     val startingTime=System.nanoTime// start clock
     // Creation of Threads
-    val workers = for(i <- 1 to nbWorkers) yield new org.amdahl.thread.Worker(i,NBTASKS)
-    workers.foreach( _.start())// // Running Thread
-
+    val workers = for(i <- 1 to nbWorkers) yield new org.amdahl.thread.Worker(i,NBTASKS/nbWorkers)
+    workers.foreach( _.start())// Running Thread
     // Waiting for the thread
     try {
         workers.foreach( _.join())
     }catch{
       case e: InterruptedException => println("Intterruption while waiting for workers")
     }
+    //TODO Collecting value
+    //val pi=workers.sum(w => w.result)
+    var pi=0.0
+    for (w <- workers) {pi+=w.result}
+    pi=pi/NBTASKS*4
+    if (debug) println("Pi= "+pi)
     var elapsedTime = System.nanoTime - startingTime// stop the clock
     if (debug) print(startingTime + " ")
-    return startingTime
+    return elapsedTime
   }
 
 
