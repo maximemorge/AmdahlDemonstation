@@ -28,7 +28,7 @@ object Main {
   val debug=false
 
   val nbProcessors= Runtime.getRuntime().availableProcessors()// number of logical processors
-  val system = ActorSystem("AmdhalDemonstration")
+  val system = ActorSystem("AmdhalDemonstration")//The Actor system
   var idSupervisor=1// give a different id to each spuervisor
   val TIMEOUTVALUE=50 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
@@ -38,7 +38,7 @@ object Main {
   val NBRUNS=20// for each number of workers , we consider NBRUNS runs
 
   /**
-    * Run the Actor system with the following default dispatcher and print a CSV file nbwWorkers,speedup
+    * Run the Actor system with the following default dispatcher and write a CSV file nbwWorkers,speedup
     * @see https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
     * fork-join-executor {
     *        # Min number of threads to cap factor-based parallelism number to

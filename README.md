@@ -9,7 +9,10 @@ The 4 physical cores appears as 8 logical CPUs with hyper-threading.
 
 "In theory, there is no difference between theory and practice. But, in practice, there is."  Johannes Lambertus Adriana van de Snepscheut. 
 
+![Speedup/workers](results/speedupThread.png)
+![Speedup/workers](results/speedupFuture.png)
 ![Speedup/workers](results/speedupActor.png)
+
 
 ## Use case
 
@@ -38,7 +41,7 @@ In order to evaluate the speedup with respect to the number of workers within th
 - the programming language Scala. Alternatively, you can select Java. 
   Anyway, the code is compiled to Java bytecode. So the resulting executable code runs on a JVM. 
 
-- the paradigm of asynchronous message-passing concurrency, i.e. the Actor model. For this purpose, we employ the open-source toolkit [Akka](http://akka.io/). Alternatively, you can select [shared-state concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency/) such as Threads or Thread Pools.
+- the paradigm of asynchronous message-passing concurrency, i.e. the Actor model (`Main.runActor(nbWorkers: Int)`). For this purpose, we employ the open-source toolkit [Akka](http://akka.io/). Alternatively, you can select [shared-state concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency/) such as Threads (`Main.runThread(nbWorkers: Int)`) or Future(`Main.runFuture(nbWorkers: Int)`).
 
 ## Requirements
 
