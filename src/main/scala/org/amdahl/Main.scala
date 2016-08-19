@@ -68,7 +68,7 @@ object Main {
     */
   def runExperiment(nbWorkers: Int): Double = {
     val runningTimes: Seq[Double] = for (run <- 1 to NBRUNS) yield {
-      this.runActor(nbWorkers)
+      this.runThread(nbWorkers)// TODO runActor
     }
     val runningTime = runningTimes.sum / runningTimes.length
     return runningTime
@@ -99,10 +99,20 @@ object Main {
     *
     */
   def runThread(nbWorkers: Int): Double ={
-    // Launch
-    val time=0
-    if (debug) print(time + " ")
-    return time
+    val startingTime=System.nanoTime// start clock
+    // Creation of Threads
+    val workers = for(i <- 1 to nbWorkers) yield new org.amdahl.thread.Worker(i,NBTASKS)
+    workers.foreach( _.start())// // Running Thread
+
+    // Waiting for the thread
+    try {
+        workers.foreach( _.join())
+    }catch{
+      case e: InterruptedException => println("Intterruption while waiting for workers")
+    }
+    var elapsedTime = System.nanoTime - startingTime// stop the clock
+    if (debug) print(startingTime + " ")
+    return startingTime
   }
 
 
