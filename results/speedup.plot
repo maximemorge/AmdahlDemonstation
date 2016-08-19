@@ -21,8 +21,14 @@ set title "Speedup with 4 physical CPU cores which appears as 8 logical CPUs\n w
 set output 'speedupThread.png'
 plot 'speedupThread.csv' with linespoints ls 1 title 'Parallel execution of independent threads', \
      8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
-# -- Thread pool
+# -- TODO Thread pool
+#set title "Speedup with 4 physical CPU cores which appears as 8 logical CPUs\n with hyper-threading"
+#set output 'speedupThreadPool.png'
+#plot 'speedupThreadPool.csv' with linespoints ls 1 title 'Parallel execution of independent threads in pools', \
+#     8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
+# -- Future
 set title "Speedup with 4 physical CPU cores which appears as 8 logical CPUs\n with hyper-threading"
-set output 'speedupThreadPool.png'
-plot 'speedupThreadPool.csv' with linespoints ls 1 title 'Parallel execution of independent threads in pools', \
+set output 'speedupFuture.png'
+plot 'speedupFuture.csv' with linespoints ls 1 title 'Parallel execution with futures', \
      8 title 'Theoretical limit for 8 logical CPUs' with lines linestyle 2
+

@@ -179,7 +179,7 @@ object Main {
     }
     val f = Future.sequence(futures.toList)// convert a List[Future[X]] to a Future[List[X]]
     val result: Try[Seq[Double]] = Await.ready(f, Duration.Inf).value.get
-    val resultEither = result match{//When all the computation is ni
+    val resultEither : Double= result match{//When all the computation is ni
       case Success(results) => {
         for (result <- results) pi+=result
         pi=pi/NBTASKS*4
@@ -187,9 +187,12 @@ object Main {
         val elapsedTime = System.nanoTime - startingTime// stop the clock
         elapsedTime
       }
-      case Failure(t) => println("An error has occured: " + t.getMessage)
+      case Failure(t) => {
+        println("An error has occured: " + t.getMessage)
+        -1.0
+      }
     }
-    pi
+    return resultEither
   }
 
 }
