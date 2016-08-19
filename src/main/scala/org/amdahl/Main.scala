@@ -71,7 +71,11 @@ object Main {
     */
   def runExperiment(nbWorkers: Int): Double = {
     val runningTimes: Seq[Double] = for (run <- 1 to NBRUNS) yield {
-      this.runThread(nbWorkers)// TODO runActor
+      // The place where the method is selected
+      //this.runActor(nbWorkers)
+      this.runThread(nbWorkers)
+      this.runThreadPool(nbWorkers)
+
     }
     val runningTime = runningTimes.sum / runningTimes.length
     return runningTime
@@ -123,12 +127,13 @@ object Main {
   }
 
   /**
-    * Execute a single run with Thread
+    * Execute a single run with Thread pool
     * @param nbWorkers
     * @return the running time in nanoseconds
     *
     */
   def runThreadPool(nbWorkers: Int): Double ={
+    // Creation of nb logical CPUs polls of threads
     val pool: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
     val startingTime=System.nanoTime// start clock
     // Creation of Threads
@@ -147,6 +152,5 @@ object Main {
     return elapsedTime
   }
 
-
-
 }
+
