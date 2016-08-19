@@ -128,6 +128,7 @@ object Main {
 
   /**
     * Execute a single run with Thread pool
+    * TODO debug : it seems the speedup factor is always 1
     * @param nbWorkers
     * @return the running time in nanoseconds
     *
@@ -152,5 +153,18 @@ object Main {
     return elapsedTime
   }
 
-}
+  /**
+    * Execute a single run with Future
+    * @param nbWorkers
+    * @return the running time in nanoseconds
+    *
+    */
+  def runFuture(nbWorkers: Int): Double = {
+    val startingTime=System.nanoTime// start clock
+    //TODO
+    var elapsedTime = System.nanoTime - startingTime// stop the clock
+    return elapsedTime
+  }
+
+  }
 
